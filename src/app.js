@@ -6,7 +6,7 @@ const helmet = require('helmet')
 const {NODE_ENV} = require('./config')
 const app = express()
 const StressEventsSerivce = require('./events/userEventsService')
-const knexInstance = require('knex')
+const eventRouter = require('./events/eventRouter')
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
@@ -14,6 +14,8 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption))
 app.use(cors())
 app.use(helmet())
+
+app.use('/api/events',eventRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response
@@ -28,16 +30,7 @@ app.use(function errorHandler(error, req, res, next) {
 
 
 
-app.get('/events',(req,res,next)=>{
-  const knexInstance = req.app.get('db')
-  StressEventsSerivce.getAllEvents(knexInstance,2)
-  .then(events=>{
-    res.json(events)
-  })
-  .catch(next)
 
-  
-})
 
 
 module.exports = app
