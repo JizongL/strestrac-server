@@ -11,7 +11,11 @@ const StressEventsSerivce = {
       )      
       .where('eve.user_id',userId)
 
+  },
+  getById(db,userId,id){
+    
   }
+
 }
 
 module.exports = StressEventsSerivce

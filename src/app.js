@@ -5,8 +5,8 @@ const cors = require('cors')
 const helmet = require('helmet')
 const {NODE_ENV} = require('./config')
 const app = express()
-const StressEventsSerivce = require('./events/userEventsService')
 const eventRouter = require('./events/eventRouter')
+const authRouter = require('../auth/auth-router')
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
@@ -16,6 +16,8 @@ app.use(cors())
 app.use(helmet())
 
 app.use('/api/events',eventRouter)
+app.use('/api/auth',authRouter)
+
 
 app.use(function errorHandler(error, req, res, next) {
     let response
