@@ -64,6 +64,20 @@ const StressEventsService = {
        .where('eve.id',id)
     
 
+  },
+  serializeReview(event) {
+    return {
+      full_name: event.id,
+      id: event.id,
+      user_id: event.user_id,
+      stress_event: event.stress_event,
+      mood: event.mood,
+      work_efficiency:event.work_efficiency,
+      stress_cause:event.stress_cause,
+      symptoms:event.symptoms,
+      coping:event.coping,
+      date_recorded:event.date_recorded
+    }
   }
 
 }

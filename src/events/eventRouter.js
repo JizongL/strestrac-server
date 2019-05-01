@@ -42,6 +42,28 @@ eventRouter
   .catch(next)
 })
 
+eventRouter
+  .route('/:event_id')
+  .all(requireAuth)
+  .all((req,res,next)=>{
+    StressEventsService.getById(
+      req.app.get('db'),
+      req.params.event_id
+    )
+    .then(event=>{
+      if(!event){
+        return res.status(404).json(
+          {error:{message:`event doesn't exist`}}
+        )
+      }
+      res.event = event
+      next()
+    })
+    .catch(next)
+  })
 
-
+  .get((req,res,next)=>{
+    res.json(res.event)
+  })
+  
 module.exports = eventRouter
