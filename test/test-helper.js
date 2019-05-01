@@ -42,6 +42,7 @@ function makeEventArray(users){
       mood: 4,
       work_efficiency: 5,
       stress_cause: "work related",
+      stress_score:4,
       symptoms: "headache",
       coping: "listen to music",
       date_recorded: "2019-04-30T18:51:34.646Z",
@@ -53,6 +54,7 @@ function makeEventArray(users){
     mood: 4,
     work_efficiency: 5,
     stress_cause: "work related",
+    stress_score:4,
     symptoms: "headache",
     coping: "listen to music",
     date_recorded: "2019-04-30T18:51:34.646Z",
@@ -64,6 +66,7 @@ function makeEventArray(users){
       mood: 4,
       work_efficiency: 5,
       stress_cause: "work related",
+      stress_score:4,
       symptoms: "headache",
       coping: "listen to music",
       date_recorded: "2019-04-30T18:51:34.646Z",
@@ -75,6 +78,7 @@ function makeEventArray(users){
     mood: 4,
     work_efficiency: 5,
     stress_cause: "work related",
+    stress_score:4,
     symptoms: "headache",
     coping: "listen to music",
     date_recorded: "2019-04-30T18:51:34.646Z",
@@ -104,6 +108,23 @@ function seedUsers(db, users) {
     });
 }
 
+function seedEventsTables(db, users, events) {
+  // use a transaction to group the queries and auto rollback on any failure
+  return db.transaction(async trx => {
+    
+    
+    await seedUsers(trx,users)
+    await trx.into('stress_events').insert(events)
+    // update the auto sequence to match the forced id values
+    await trx.raw(
+            `SELECT setval('stress_events_id_seq', ?)`,
+            [events[events.length - 1].id],
+          )
+    // only insert comments if there are some, also update the sequence counter  
+  
+  })
+}
+
 function cleanTables(db) {
   return db.raw(
     `TRUNCATE
@@ -112,10 +133,45 @@ function cleanTables(db) {
       `
   )
 }
+function makeMaliciousEvent() {
+  const maliciousEvent = {
+    id: 911,
+    stress_event: "crazy event",
+     mood: 4,
+     work_efficiency: 5,
+     date_recorded: new Date(),
+    stress_cause: 'Naughty naughty very naughty <script>alert("xss");</script>',
+    stress_score:4,
+    user_id:2,
+    coping: "listen to music",
+    symptoms: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+  }
+  
+  const expectedEvent = {
+    ...maliciousEvent,       
+    stress_cause: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+    symptoms: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
+  }
+  return {
+    maliciousEvent,
+    expectedEvent,
+  }
+}
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  const token = jwt.sign({ user_id: user.id }, secret, {
+       subject: user.user_name,
+       algorithm: 'HS256',
+     })
+     console.log(token,'test token')
+return `Bearer ${token}`
+}
 
 module.exports ={
+  seedEventsTables,
+  makeAuthHeader,
   makeUsersArray,
   makeEventsFixtures,
+  makeMaliciousEvent,
   makeEventArray,
   cleanTables,
   seedUsers
