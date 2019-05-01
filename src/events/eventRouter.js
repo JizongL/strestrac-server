@@ -51,6 +51,7 @@ eventRouter
       req.params.event_id
     )
     .then(event=>{
+      console.log(event,'test event')
       if(!event){
         return res.status(404).json(
           {error:{message:`event doesn't exist`}}
@@ -58,12 +59,39 @@ eventRouter
       }
       res.event = event
       next()
+      
     })
     .catch(next)
   })
-
+  .get(requireAuth)
   .get((req,res,next)=>{
     res.json(res.event)
   })
   
+  .delete(requireAuth,(req,res,next)=>{
+    StressEventsService.deleteEvent(
+      req.app.get('db'),
+      req.params.event_id
+    )
+    .then(()=>{
+      res.status(204)
+      .send('deleted')
+      .end()
+    })
+    .catch()
+  })
+  .patch(requireAuth,jsonBodyParser,(req,res,next)=>{
+    const {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping} = req.body
+    const eventToUpdate = {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping}
+    StressEventsService.updateEvent(
+      req.app.get('db'),
+      req.params.event_id,
+      eventToUpdate
+    )
+    .then(numRowsAffected=>{
+      res.status(204).end()
+    })
+    .catch(next)
+  })
+
 module.exports = eventRouter

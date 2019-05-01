@@ -9,7 +9,7 @@ const StressEventsService = {
         'usr.full_name',
         'usr.id',
         'eve.stress_event',
-        'eve.user_id',
+        'eve.id',
         'eve.mood',
         'eve.work_efficiency',
         'eve.stress_cause',
@@ -30,16 +30,19 @@ const StressEventsService = {
       .insert(newEvent)
       .into('stress_events')
       .returning('*')
-      .then(([event]) => event)
-      .then(event =>{
-        console.log(event.id,'test event in event service')
-        return StressEventsService.getById(db,event.id)
-
+      .then(row=>{
+        return row[0]
       })
+      // .then(([event]) => event)
+      // .then(event =>{
+      //   console.log(event.id,'test event in event service')
+      //   return StressEventsService.getById(db,event.id)
+
+      // })
   },
   // need to test if userId is needed
   getById(db,id){
-    console.log(id,'test id inside get by id')
+    //console.log(id,'test id inside get by id')
     return db
     .from('stress_events AS eve')
     
@@ -62,10 +65,22 @@ const StressEventsService = {
           'usr.id'
       )      
        .where('eve.id',id)
+       .first()
     
 
   },
-  serializeReview(event) {
+  updateEvent(db,id,eventToUpdate){
+    return db('stress_events')
+    .where({id})
+    .update(eventToUpdate)
+  },
+  deleteEvent(db,id){
+    return db
+      .from('stress_events')
+      .where({id}).delete()
+  }
+  ,
+  serializeEvent(event) {
     return {
       full_name: event.id,
       id: event.id,
