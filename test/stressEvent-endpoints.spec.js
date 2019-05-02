@@ -132,29 +132,29 @@ describe('Events Endpoints', function() {
       })
     })
 
-    context(`Given an XSS attack thing`, () => {
+    context.only(`Given an XSS attack event`, () => {
       const testUser = helpers.makeUsersArray()[1]
       const {
-        maliciousThing,
-        expectedThing,
+        maliciousEvent,
+        expectedEvent,
       } = helpers.makeMaliciousEvent(testUser)
 
-      beforeEach('insert malicious thing', () => {
-        return helpers.seedMaliciousThing(
+      beforeEach('insert malicious event', () => {
+        return helpers.seedMaliciousEvent(
           db,
           testUser,
-          maliciousThing,
+          maliciousEvent,
         )
       })
 
       it('removes XSS attack content', () => {
         return supertest(app)
-          .get(`/api/things/${maliciousThing.id}`)
+          .get(`/api/events/${maliciousEvent.id}`)
           .set('Authorization',helpers.makeAuthHeader(testUser))
           .expect(200)
           .expect(res => {
-            expect(res.body.title).to.eql(expectedThing.title)
-            expect(res.body.content).to.eql(expectedThing.content)
+            expect(res.body.stress_cause).to.eql(expectedEvent.stress_cause)
+            expect(res.body.symptoms).to.eql(expectedEvent.symptoms)
           })
       })
     })

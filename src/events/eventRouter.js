@@ -68,7 +68,7 @@ eventRouter
   })
   .get(requireAuth)
   .get((req,res,next)=>{
-    res.json(res.event)
+    res.json(StressEventsService.serializeEvent(res.event))
   })
   
   .delete(requireAuth,(req,res,next)=>{

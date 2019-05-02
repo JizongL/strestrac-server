@@ -85,13 +85,14 @@ const StressEventsService = {
   ,
   serializeEvent(event) {
     return {
-      full_name: xss(event.id),
+      full_name: xss(event.full_name),
       id: event.id,
       user_id: event.user_id,
       stress_event: xss(event.stress_event),
       mood: event.mood,
-      work_efficiency:xss(event.work_efficiency),
+      work_efficiency:event.work_efficiency,
       stress_cause:xss(event.stress_cause),
+      stress_score:event.stress_score,
       symptoms:xss(event.symptoms),
       coping:xss(event.coping),
       date_recorded:event.date_recorded
