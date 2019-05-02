@@ -247,43 +247,89 @@ describe('Events Endpoints', function() {
   )
         it('responds with 204 and remove the event',()=>{
           const idToDelete = 1
-          const expectedEvents = testEvents.filter(event=>{
-            event.id!==idToDelete
+          const filterEvents = testEvents.filter(event=>
+            event.id!==idToDelete)
+          
+          const expectedResult = filterEvents.map(event=> ({...event,full_name:testUsers[0].full_name}))
+          
+            console.log(expectedResult,'test expected')
+            //console.log(testEvents,'test expected')
           return supertest(app)  
             .delete(`/api/events/${idToDelete}`)
             .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
-            .expect(201)
+            .expect(204)
             .then(()=>{
              return supertest(app)
-                .get(`/api/events/${idToDelete}`)
-                .expect(404,expectedEvents)
+                .get(`/api/events/`)
+                .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+                .expect(200,expectedResult)
 
             })
         })
-        })
+        
 
     })
   })
-  describe(`PATCH /api/events`,()=>{
+  describe.only(`PATCH /api/events`,()=>{
     context.only(`Given no events`,()=>{
+      beforeEach('insert events', () =>
+      helpers.seedUsers(
+        db,
+        testUsers
+     
+      )       
+    )
       it('respond with 404',()=>{
         const eventId = 12345
+        
           return supertest(app)
             .patch(`/api/events/${eventId}`)
             .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
-            .expect(404,{error:{message:`event doesn't exist`}})
+            //.expect(404,{error:{message:`event doesn't exist`}})
       })
     })
-    beforeEach('insert events', () =>
-    helpers.seedEventsTables(
-      db,
-      testUsers,
-      testEvents          
-    )       
-  )
+    context.only(`Given there are events`,()=>{
+      beforeEach('insert events', () =>
+      helpers.seedEventsTables(
+        db,
+        testUsers,
+        testEvents          
+      )       
+    )
+      
   const eventId = 1
-  const expected = {...testEvents[eventId-1],full_name:testUsers[0].full_name}
+  
+      it(`respond with 204 and update the event`,()=>{
+        const idToUpdate = 2
+        const updateEvent = {
+        coping: "updated",                
+        id:eventId,
+        mood:4,
+        stress_cause:"updated",
+        stress_event:"updated",
+        stress_score:4,
+        symptoms: "updated",        
+        work_efficiency:5,      
+        }
 
+        const expectedEvent = {
+          ...testEvents[idToUpdate-1],
+          updateEvent
+        }
+        return supertest(app)
+          .patch(`/api/events/${idToUpdate}`)
+          .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+          .send(updateEvent)
+          .expect(204)
+          .then(res=>{
+            supertest(app)
+              .get(`/api/events/${idToUpdate}`)
+              .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+              .expect(expectedEvent)
+          })
+      })
+    })
+ 
 
   })
 })

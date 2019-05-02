@@ -61,9 +61,10 @@ eventRouter
         )
 
       }
+      
       res.event = event
       next()
-      
+      return event
     })
     .catch(next)
   })
