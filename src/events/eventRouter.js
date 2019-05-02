@@ -59,6 +59,7 @@ eventRouter
         return res.status(404).json(
           {error:{message:`event doesn't exist`}}
         )
+
       }
       res.event = event
       next()
@@ -76,12 +77,10 @@ eventRouter
       req.app.get('db'),
       req.params.event_id
     )
-    .then(()=>{
-      res.status(204)
-      .send('deleted')
-      .end()
+    .then(numRowsAffected=>{
+      res.status(204).end()
     })
-    .catch()
+    .catch(next)
   })
   .patch(requireAuth,jsonBodyParser,(req,res,next)=>{
     const {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping} = req.body

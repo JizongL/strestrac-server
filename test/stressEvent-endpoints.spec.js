@@ -251,11 +251,13 @@ describe('Events Endpoints', function() {
             event.id!==idToDelete
           return supertest(app)  
             .delete(`/api/events/${idToDelete}`)
-            .expect(204)
-            .then(res=>{
-              supertest(app)
-                .get(`/api/events`)
-                .expect(expectedEvents)
+            .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+            .expect(201)
+            .then(()=>{
+             return supertest(app)
+                .get(`/api/events/${idToDelete}`)
+                .expect(404,expectedEvents)
+
             })
         })
         })
@@ -263,6 +265,15 @@ describe('Events Endpoints', function() {
     })
   })
   describe(`PATCH /api/events`,()=>{
+    context.only(`Given no events`,()=>{
+      it('respond with 404',()=>{
+        const eventId = 12345
+          return supertest(app)
+            .patch(`/api/events/${eventId}`)
+            .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+            .expect(404,{error:{message:`event doesn't exist`}})
+      })
+    })
     beforeEach('insert events', () =>
     helpers.seedEventsTables(
       db,
