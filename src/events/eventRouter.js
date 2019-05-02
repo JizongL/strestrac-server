@@ -25,7 +25,7 @@ eventRouter
   const {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping} = req.body
   const newEvent = {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping}
   newEvent.user_id = req.user.id
-  console.log(newEvent,'test new event')
+  //console.log(newEvent,'test new event')
   for (const [key, value] of Object.entries(newEvent))
       if (value == null)
         return res.status(400).json({
@@ -36,7 +36,7 @@ eventRouter
     newEvent
   )
   .then(event=>{
-    console.log(event.id,'test event inside event router')
+    //console.log(event.id,'test event inside event router')
     res
       .status(201)
       .location(path.posix.join(req.originalUrl, `/${event.id}`))   

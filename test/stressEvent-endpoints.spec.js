@@ -51,9 +51,7 @@ describe('Events Endpoints', function() {
           db,
           testUsers,
           testEvents          
-        )
-       
-
+        )       
       )
       
       it('responds with 200 and all of the events', () => {
@@ -158,5 +156,123 @@ describe('Events Endpoints', function() {
           })
       })
     })
+  })
+
+  describe.only(`POST /api/events`,()=>{
+    beforeEach('insert events', () =>
+    helpers.seedEventsTables(
+      db,
+      testUsers,
+      testEvents          
+    )       
+  )
+  it.only('create an event, responding with 201 and the new review',function(){
+    this.retries(3)
+    const testEvent = testEvents[0]
+    const testUser = testUsers[0]
+    const newEvent = {
+      coping: "listen to music",
+      //date_recorded: "2019-04-30T18:51:34.646Z",
+      date_recorded: new Date(),
+      id:testEvent.id,
+      mood:4,
+      stress_cause:"test",
+      stress_event:"Test new event",
+      stress_score:4,
+      symptoms: "headache",
+      user_id:testUser.id,
+      work_efficiency:5,
+    }
+    return supertest(app)
+    .post('/api/events')
+    .set('Authorization', helpers.makeAuthHeader(testUser))
+    .send(newEvent)
+    .expect(201)
+    .expect(res=>{
+     
+      // console.log(expectedDate,actualDate,'test dates')
+      expect(res.body).to.have.property('id')
+      expect(res.body.coping).to.eql(newEvent.coping)
+      expect(res.body.stress_cause).to.eql(newEvent.stress_cause)
+      expect(res.body.stress_score).to.eql(newEvent.stress_score)
+      expect(res.body.symptoms).to.eql(newEvent.symptoms)
+      expect(res.body.stress_event).to.eql(newEvent.stress_event)
+      expect(res.body.work_efficiency).to.eql(newEvent.work_efficiency)
+      expect(res.body.mood).to.eql(newEvent.mood)
+      expect(res.headers.location).to.eql(`/api/events/${res.body.id}`)
+      expect(res.body.user_id).to.eql(testUser.id)
+      //console.log(res.body,'test post res')
+      const expectedDate = new Date().toLocaleString()
+      //console.log(expectedDate,'test expectedDate')
+      const actualDate = new Date(res.body.date_recorded).toLocaleString()
+      //console.log(res.body.date_recorded,'test actualDate')
+      expect(expectedDate).to.eql(actualDate)
+    })
+  })
+  const requiredFields = ['coping', 'mood', 'stress_event', 'work_efficiency','stress_cause','stress_score','symptoms']
+  requiredFields.forEach(field=>{
+    const testEvent = testEvents[0]
+    const newEvent = {     
+        coping: "listen to music",                
+        id:testEvent.id,
+        mood:4,
+        stress_cause:"test",
+        stress_event:"Test new event",
+        stress_score:4,
+        symptoms: "headache",        
+        work_efficiency:5,      
+    }
+
+    it.only(`responds with 400 and an error message when the '${field}' is missing`,()=>{
+      delete newEvent[field]
+      return supertest(app)
+        .post('/api/events')
+        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        .send(newEvent)
+        .expect(400,{error:`Missing '${field}' in request body`})
+    })
+
+  })
+  })
+
+  describe.only(`DELETE /api/events/:event_id`,()=>{
+    context(`Given there are events in the database`,()=>{
+      
+      beforeEach('insert events', () =>
+      helpers.seedEventsTables(
+      db,
+      testUsers,
+      testEvents          
+    )       
+  )
+        it('responds with 204 and remove the event',()=>{
+          const idToDelete = 1
+          const expectedEvents = testEvents.filter(event=>{
+            event.id!==idToDelete
+          return supertest(app)  
+            .delete(`/api/events/${idToDelete}`)
+            .expect(204)
+            .then(res=>{
+              supertest(app)
+                .get(`/api/events`)
+                .expect(expectedEvents)
+            })
+        })
+        })
+
+    })
+  })
+  describe(`PATCH /api/events`,()=>{
+    beforeEach('insert events', () =>
+    helpers.seedEventsTables(
+      db,
+      testUsers,
+      testEvents          
+    )       
+  )
+  const eventId = 1
+  const expected = {...testEvents[eventId-1],full_name:testUsers[0].full_name}
+
+
   })
 })
