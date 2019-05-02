@@ -57,6 +57,7 @@ const StressEventsService = {
         'eve.mood',
         'eve.work_efficiency',
         'eve.stress_cause',
+        'eve.stress_score',
         'eve.symptoms',
         'eve.coping',
         'eve.date_recorded',

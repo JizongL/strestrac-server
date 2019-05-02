@@ -73,7 +73,7 @@ describe('Events Endpoints', function() {
       })
     })
 
-    context.only(`Given an XSS attack event`, () => {
+    context(`Given an XSS attack event`, () => {
       const testUser = helpers.makeUsersArray()[1]
       const {
         maliciousEvent,
@@ -99,5 +99,64 @@ describe('Events Endpoints', function() {
       })
     })
   })
+  describe.only(`GET /api/events/:event_id`, () => {
+    context.only(`Given no event`, () => {
+      beforeEach(() =>
+      helpers.seedUsers(db, testUsers))
+      it(`responds with 404`, () => {
+        const eventId = 123456
+        return supertest(app)
+          .get(`/api/events/${eventId}`)
+          .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, { error: {message:"event doesn't exist"} })
+      })
+    })
 
+    context.only('Given there are events in the database', () => {
+      beforeEach('insert events', () =>
+        helpers.seedEventsTables(
+          db,
+          testUsers,
+          testEvents          
+        )       
+      )
+
+      it('responds with 200 and the specified event', () => {
+        const eventId = 1
+        const expected = {...testEvents[eventId-1],full_name:testUsers[0].full_name}
+
+        return supertest(app)
+          .get(`/api/events/${eventId}`)
+          .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
+          .expect(200, expected)
+      })
+    })
+
+    context(`Given an XSS attack thing`, () => {
+      const testUser = helpers.makeUsersArray()[1]
+      const {
+        maliciousThing,
+        expectedThing,
+      } = helpers.makeMaliciousEvent(testUser)
+
+      beforeEach('insert malicious thing', () => {
+        return helpers.seedMaliciousThing(
+          db,
+          testUser,
+          maliciousThing,
+        )
+      })
+
+      it('removes XSS attack content', () => {
+        return supertest(app)
+          .get(`/api/things/${maliciousThing.id}`)
+          .set('Authorization',helpers.makeAuthHeader(testUser))
+          .expect(200)
+          .expect(res => {
+            expect(res.body.title).to.eql(expectedThing.title)
+            expect(res.body.content).to.eql(expectedThing.content)
+          })
+      })
+    })
+  })
 })

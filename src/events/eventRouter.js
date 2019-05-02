@@ -5,6 +5,9 @@ const StressEventsService = require('./userEventsService')
 const { requireAuth } = require('../middleware/jwt-auth')
 const path = require('path')
 
+// remember the events.map() here, I was trying to 
+// res.json(StressEventsService.serializeEvent(events)) before, it didn't
+// work, because events are an array of objects. 
 eventRouter
   .route('/')
   .get(requireAuth)
@@ -51,7 +54,7 @@ eventRouter
       req.params.event_id
     )
     .then(event=>{
-      console.log(event,'test event')
+      // console.log(event,'test event')
       if(!event){
         return res.status(404).json(
           {error:{message:`event doesn't exist`}}
