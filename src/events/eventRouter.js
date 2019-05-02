@@ -12,7 +12,7 @@ eventRouter
   const knexInstance = req.app.get('db')
   StressEventsService.getAllEvents(knexInstance,req.user.id)
   .then(events=>{
-    res.json(events)
+    res.json(events.map(StressEventsService.serializeEvent))
   })
   .catch(next)
 

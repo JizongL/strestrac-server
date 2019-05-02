@@ -26,9 +26,9 @@ function makeUsersArray(){
     },
     {
       id: 4,
-      user_name: 'test-user-4',
-      full_name: 'Test user 4',      
-      password: 'password',
+      user_name:'test-user-4',
+      full_name:'Test user 4',      
+      password:'password',
       date_created: new Date('2029-01-22T16:28:32.615Z'),
     },
   ]
@@ -37,28 +37,31 @@ function makeUsersArray(){
 function makeEventArray(users){
   return[
     {      
-      id: 1,
-      stress_event: "crazy event",
-      mood: 4,
-      work_efficiency: 5,
-      stress_cause: "work related",
-      stress_score:4,
-      symptoms: "headache",
+      
       coping: "listen to music",
       date_recorded: "2019-04-30T18:51:34.646Z",
-      user_id:users[0].id
+      id:1,
+      mood:4,
+      stress_cause:"work related",
+      stress_event:"crazy event",
+      stress_score:4,
+      symptoms: "headache",
+      user_id:users[0].id,
+      work_efficiency:5,
+      
+      
   },
   {      
-    id: 2,
-    stress_event: "crazy event",
-    mood: 4,
-    work_efficiency: 5,
-    stress_cause: "work related",
-    stress_score:4,
-    symptoms: "headache",
     coping: "listen to music",
     date_recorded: "2019-04-30T18:51:34.646Z",
-    user_id:users[1].id
+    id:2,
+    mood:4,
+    stress_cause:"work related",
+    stress_event:"crazy event",
+    stress_score:4,
+    symptoms: "headache",
+    user_id:users[0].id,
+    work_efficiency:5,
 },
   {      
       id: 3,
@@ -70,7 +73,7 @@ function makeEventArray(users){
       symptoms: "headache",
       coping: "listen to music",
       date_recorded: "2019-04-30T18:51:34.646Z",
-      user_id:users[2].id
+      user_id:users[0].id
   },
   {      
     id: 4,
@@ -82,7 +85,7 @@ function makeEventArray(users){
     symptoms: "headache",
     coping: "listen to music",
     date_recorded: "2019-04-30T18:51:34.646Z",
-    user_id:users[3].id
+    user_id:users[0].id
     }
   ]
 }
@@ -125,12 +128,32 @@ function seedEventsTables(db, users, events) {
   })
 }
 
+// function cleanTables(db) {
+//   return db.raw(
+//     `TRUNCATE
+//       stress_events,
+//       stress_users      
+//       `
+//   )
+// }
+
 function cleanTables(db) {
-  return db.raw(
-    `TRUNCATE
-      stress_events,
-      stress_users      
+  return db.transaction(trx =>
+    trx.raw(
+      `TRUNCATE
+        stress_events,
+        stress_users        
       `
+    )
+    .then(() =>
+      Promise.all([
+        trx.raw(`ALTER SEQUENCE stress_events_id_seq minvalue 0 START WITH 1`),
+        trx.raw(`ALTER SEQUENCE stress_users_id_seq minvalue 0 START WITH 1`),        
+        trx.raw(`SELECT setval('stress_events_id_seq', 0)`),
+        trx.raw(`SELECT setval('stress_users_id_seq', 0)`),
+        
+      ])
+    )
   )
 }
 function makeMaliciousEvent() {
@@ -166,7 +189,17 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 return `Bearer ${token}`
 }
 
+function seedMaliciousEvent(db, user, event) {
+  return seedUsers(db, [user])
+    .then(() =>
+      db
+        .into('stress_events')
+        .insert([event])
+    )
+}
+
 module.exports ={
+  seedMaliciousEvent,
   seedEventsTables,
   makeAuthHeader,
   makeUsersArray,

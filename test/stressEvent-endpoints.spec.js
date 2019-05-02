@@ -9,6 +9,7 @@ describe('Events Endpoints', function() {
     testUsers,
     testEvents
   } = helpers.makeEventsFixtures()
+
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
@@ -25,7 +26,7 @@ describe('Events Endpoints', function() {
 
   describe(`GET /api/events/`, () => {
     
-    context.only(`Given no events`, () => {
+    context(`Given no events`, () => {
       // only users and no event, so seeding users
       beforeEach('seed users',()=>{
         helpers.seedUsers(
@@ -45,42 +46,42 @@ describe('Events Endpoints', function() {
       // console.log('test users',testUsers)
       // console.log('test articles',testArticles)
       // console.log('test comments',testComments)
-      beforeEach('insert articles', () =>
-        helpers.seedArticlesTables(
+      beforeEach('insert events', () =>
+        helpers.seedEventsTables(
           db,
           testUsers,
-          testArticles,
-          testComments,
+          testEvents          
         )
+       
+
       )
       
-      it('responds with 200 and all of the articles', () => {
-        const expectedArticles = testArticles.map(article =>
-          helpers.makeExpectedArticle(
-            testUsers,
-            article,
-            testComments,
-          )
-        )
+      it('responds with 200 and all of the events', () => {
+  // only 1 user is needed.       
+        const expected = testEvents.map(event=>
+	
+       {return {...event,full_name:testUsers[0].full_name}}
+     )
+     console.log(expected)
+
+
         return supertest(app)
           .get('/api/events')
           .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-          .expect(200, expectedArticles)
-         
+          .expect(200, expected)
+          
       })
     })
 
-    context(`Given an XSS attack article`, () => {
+    context.only(`Given an XSS attack event`, () => {
       const testUser = helpers.makeUsersArray()[1]
       const {
         maliciousEvent,
         expectedEvent,
       } = helpers.makeMaliciousEvent()
 
-      beforeEach('insert malicious article', () => {
-        return db
-          .into('stress_events')
-          .insert(maliciousEvent)          
+      beforeEach('insert malicious event', () => {       
+        helpers.seedMaliciousEvent(db, testUser, maliciousEvent)         
       })
 
       it('removes XSS attack content', () => {
@@ -91,9 +92,9 @@ describe('Events Endpoints', function() {
           .set('Authorization', helpers.makeAuthHeader(testUser))
           .expect(200)
           .expect(res => {
-            
-            expect(res.body[0].stress_cause).to.eql(expectedArticle.title)
-            expect(res.body[0].content).to.eql(expectedArticle.content)
+            //  console.log(res.body[0],'test')
+            expect(res.body[0].stress_cause).to.eql(expectedEvent.stress_cause)
+            expect(res.body[0].symptoms).to.eql(expectedEvent.symptoms)
           })
       })
     })
