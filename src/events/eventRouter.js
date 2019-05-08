@@ -84,8 +84,8 @@ eventRouter
     .catch(next)
   })
   .patch(requireAuth,jsonBodyParser,(req,res,next)=>{
-    const {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping} = req.body
-    const eventToUpdate = {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping}
+    const {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping,date_recorded} = req.body
+    const eventToUpdate = {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping,date_recorded}
     StressEventsService.updateEvent(
       req.app.get('db'),
       req.params.event_id,

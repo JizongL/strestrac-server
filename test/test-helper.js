@@ -47,7 +47,7 @@ function makeEventArray(users){
       stress_score:4,
       symptoms: "headache",
       user_id:users[0].id,
-      work_efficiency:5,
+      work_efficiency:5
       
       
   },

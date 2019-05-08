@@ -60,7 +60,7 @@ describe('Events Endpoints', function() {
 	
        {return {...event,full_name:testUsers[0].full_name}}
      )
-     console.log(expected)
+     
 
 
         return supertest(app)
@@ -90,7 +90,7 @@ describe('Events Endpoints', function() {
           .set('Authorization', helpers.makeAuthHeader(testUser))
           .expect(200)
           .expect(res => {
-            //  console.log(res.body[0],'test')
+            
             expect(res.body[0].stress_cause).to.eql(expectedEvent.stress_cause)
             expect(res.body[0].symptoms).to.eql(expectedEvent.symptoms)
           })
@@ -172,7 +172,7 @@ describe('Events Endpoints', function() {
     const testUser = testUsers[0]
     const newEvent = {
       coping: "listen to music",
-      //date_recorded: "2019-04-30T18:51:34.646Z",
+      
       date_recorded: new Date(),
       id:testEvent.id,
       mood:4,
@@ -201,11 +201,11 @@ describe('Events Endpoints', function() {
       expect(res.body.mood).to.eql(newEvent.mood)
       expect(res.headers.location).to.eql(`/api/events/${res.body.id}`)
       expect(res.body.user_id).to.eql(testUser.id)
-      //console.log(res.body,'test post res')
+      
       const expectedDate = new Date().toLocaleString()
-      //console.log(expectedDate,'test expectedDate')
+      
       const actualDate = new Date(res.body.date_recorded).toLocaleString()
-      //console.log(res.body.date_recorded,'test actualDate')
+      
       expect(expectedDate).to.eql(actualDate)
     })
   })
@@ -252,8 +252,8 @@ describe('Events Endpoints', function() {
           
           const expectedResult = filterEvents.map(event=> ({...event,full_name:testUsers[0].full_name}))
           
-            console.log(expectedResult,'test expected')
-            //console.log(testEvents,'test expected')
+            
+            
           return supertest(app)  
             .delete(`/api/events/${idToDelete}`)
             .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
@@ -285,7 +285,7 @@ describe('Events Endpoints', function() {
           return supertest(app)
             .patch(`/api/events/${eventId}`)
             .set('Authorization',helpers.makeAuthHeader(testUsers[0]))
-            //.expect(404,{error:{message:`event doesn't exist`}})
+           
       })
     })
     context(`Given there are events`,()=>{
