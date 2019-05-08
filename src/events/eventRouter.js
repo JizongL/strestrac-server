@@ -25,13 +25,21 @@ eventRouter
   const {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping} = req.body
   const newEvent = {stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping}
   newEvent.user_id = req.user.id
-  //console.log(newEvent,'test new event')
+  
+
+
   for (const [key, value] of Object.entries(newEvent))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
-        StressEventsService.insertEvent(
+  stressEvent_input_error = StressEventsService.validateStressEventInput(stress_event)
+  
+  if(stressEvent_input_error)
+      res.status(400).json({ error: stressEvent_input_error })
+        
+        
+    StressEventsService.insertEvent(
     req.app.get('db'),
     newEvent
   )

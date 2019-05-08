@@ -35,16 +35,11 @@ const StressEventsService = {
       .then(row=>{
         return row[0]
       })
-      // .then(([event]) => event)
-      // .then(event =>{
-      //   console.log(event.id,'test event in event service')
-      //   return StressEventsService.getById(db,event.id)
-
-      // })
+      
   },
-  // need to test if userId is needed
+  
   getById(db,id){
-    //console.log(id,'test id inside get by id')
+  
     return db
     .from('stress_events AS eve')
     
@@ -97,7 +92,13 @@ const StressEventsService = {
       coping:xss(event.coping),
       date_recorded:event.date_recorded
     }
+  },
+  validateStressEventInput(event){
+    if(event.length>80)
+    {return 'stress event title length must not exceed 80 letters'}
+    return null
   }
+  
 
 }
 

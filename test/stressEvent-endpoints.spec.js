@@ -209,6 +209,30 @@ describe('Events Endpoints', function() {
       expect(expectedDate).to.eql(actualDate)
     })
   })
+  it('create an envent, with title length > 80, responding with error',()=>{
+    //this.retries(3)
+    const testEvent = testEvents[0]
+    const testUser = testUsers[0]
+    const newEvent = {
+      coping: "listen to music",        
+      date_recorded: new Date(),
+      id:testEvent.id,
+      mood:4,
+      stress_cause:"test",
+      stress_event:"a".repeat(81),
+      
+      stress_score:4,
+      symptoms: "headache",
+      user_id:testUser.id,
+      work_efficiency:5,
+    }
+    return supertest(app)
+    .post('/api/events')
+    .set('Authorization', helpers.makeAuthHeader(testUser))
+    .send(newEvent)
+    .expect(400,{error:'stress event title length must not exceed 80 letters'})
+
+  })
   const requiredFields = ['coping', 'mood', 'stress_event', 'work_efficiency','stress_cause','stress_score','symptoms']
   requiredFields.forEach(field=>{
     const testEvent = testEvents[0]
@@ -223,8 +247,11 @@ describe('Events Endpoints', function() {
         work_efficiency:5,      
     }
 
+    
+
     it(`responds with 400 and an error message when the '${field}' is missing`,()=>{
       delete newEvent[field]
+      console.log(field)
       return supertest(app)
         .post('/api/events')
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
