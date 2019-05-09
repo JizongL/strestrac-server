@@ -4,3 +4,4 @@ module.exports = {
   DB_URL: process.env.DB_URL || 'postgresql://dunder-mifflin@localhost/strestrac',
   JWT_SECRET: process.env.JWT_SECRET || '395d92cf-e93c-4945-8578-0cffa7181d9a',
 }
+

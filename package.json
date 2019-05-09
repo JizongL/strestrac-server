@@ -1,5 +1,5 @@
 {
-  "name": "express-boilerplate",
+  "name": "strestracs-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,6 +12,9 @@
     "dev": "nodemon src/server.js"
   },
   "keywords": [],
+  "engines":{
+    "node": "11.12.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
