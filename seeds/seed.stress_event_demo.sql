@@ -1,9 +1,9 @@
 BEGIN;
 
 TRUNCATE
-  stress_events;
+  stress_events,
   
-  
+  RESTART IDENTITY CASCADE;
 
 
 
@@ -36,7 +36,7 @@ VALUES
  ('Sexual difficulties',0,1,'excessive noise, overcrowding, and pollution',4,'sweating stomach upset changes in appetite.','Keep a positive attitude Talk to Someone.',2,'2019-05-13 11:52:38.71987-04'), 
  ('Major mortgage',3,3,'driving in heavy traffic or fear of an accident',3,'Insomnia. digestive problems. pain in the back or chest','Avoid Caffeine, Alcohol, and Nicotine.  Try Relaxation (Techniques.',2,'2019-09-13 21:37:12.71987-04'), 
  ('Trouble with boss',2,4,'moving home.',2,'erectile dysfunction and loss of libido Insomnia. irritability, which can be extreme.','Manage Your Time. Keep a positive attitude',2,'2019-09-24 21:15:41.71987-04'), 
- ('Death of a close family member',1,1,'relationships, marriage, and divorce.',4,'Frequent colds and infections. Loss of sexual desire and/or ability. Chest pain and rapid (heartbeat.','Exercise.  Get More Sleep.',2,'2019-02-10 09:45:48.71987-04'), 
+ ('Death of a close family member',1,1,'relationships, marriage, and divorce.',4,'Frequent colds and infections. Loss of sexual desire and/or ability. Chest pain and rapid (heartbeat.','Exercise.  Get More Sleep.',2,'2019-00-10 09:45:48.71987-04'), 
  ('Dismissal from work',1,1,'bereavement.',0,'rapid, disorganized thoughts. cramps or muscle spasms irritability, which can be extreme.','Keep a Stress Diary.  Indulge in Physical Activity.',2,'2019-02-02 12:41:06.71987-04'), 
  ('Begin or end school',2,1,'bereavement.',4,'digestive problems. lower immunity against diseases irritability, which can be extreme.','Get More Sleep.  Keep a positive attitude',2,'2019-10-04 03:23:31.71987-04'), 
  ('Personal injury or illness',0,3,'illness.',3,'sleeping difficulties Headaches. fatigue.','listen to music Try Relaxation Techniques.',2,'2019-01-10 06:21:28.71987-04'), 
@@ -57,10 +57,10 @@ VALUES
  ('Change in eating habits',0,0,'job issues or retirement.',3,'rapid, disorganized thoughts. headaches. heart disease','Talk to Someone.  Meditate.',2,'2019-10-01 11:38:57.71987-04'), 
  ('Marital separation',2,3,'excessive noise, overcrowding, and pollution',3,'difficulty concentrating, or an inability to do so. Upset stomach, including diarrhea, constipation, and nausea. (cramps or muscle spasms','Take Control.  Take a break from the stressor.',2,'2019-09-01 03:41:41.71987-04'), 
  ('Change in responsibilities at work',1,0,'bereavement.',0,'digestive problems. nervous twitches Upset stomach, including diarrhea, constipation, and nausea.','Smile and laugh.  Get social (support.',2,'2019-05-04 01:29:56.71987-04'), 
- ('Death of a spouse',0,3,'moving home.',3,'fainting muscular aches high blood pressure','Keep a Stress Diary.  Exercise.',2,'2019-02-28 16:32:29.71987-04'), 
+ ('Death of a spouse',0,3,'moving home.',3,'fainting muscular aches high blood pressure','Keep a Stress Diary.  Exercise.',2,'2019-00-28 16:32:29.71987-04'), 
  ('Major mortgage',0,2,'relationships, marriage, and divorce.',1,'headache Chest pain and rapid heartbeat. pins and needles','Talk to Someone.  Smile and laugh.',2,'2019-04-17 15:54:43.71987-04'), 
  ('Change in sleeping habits',2,0,'bereavement.',0,'Chest pain and rapid heartbeat. headaches. Aches, pains, and tense muscles.','Manage Your Time. Smile and laugh.',2,'2019-04-16 12:30:23.71987-04'), 
- ('Christmas',4,0,'lack of time or money.',1,'sleeping difficulties high blood pressure Upset stomach, including diarrhea, constipation, and nausea.','Exercise.  listen to music',2,'2019-02-10 08:00:17.71987-04'), 
+ ('Christmas',4,0,'lack of time or money.',1,'sleeping difficulties high blood pressure Upset stomach, including diarrhea, constipation, and nausea.','Exercise.  listen to music',2,'2019-00-10 08:00:17.71987-04'), 
  ('Marital reconciliation',4,4,'job issues or retirement.',3,'heart disease cramps or muscle spasms difficulty sleeping.','Take Control.  Manage Your Time.',2,'2019-01-21 15:58:07.71987-04'), 
  ('Change in responsibilities at work',1,2,'moving home.',0,'Loss of sexual desire and/or ability. cramps or muscle spasms pain in the back or chest','listen to music Try Relaxation (Techniques.',2,'2019-08-26 19:40:43.71987-04'), 
  ('Change in working hours or conditions',4,0,'moving home.',2,'difficulty concentrating, or an inability to do so. Chest pain and rapid heartbeat. high blood pressure','Smile and laugh.  (Keep a Stress Diary.',2,'2019-03-17 06:34:46.71987-04'), 
@@ -68,7 +68,7 @@ VALUES
  ('Change in responsibilities at work',0,2,'driving in heavy traffic or fear of an accident',2,'cramps or muscle spasms rapid, disorganized thoughts. sleeping difficulties','Meditate. (Meditate.',2,'2019-04-05 20:45:37.71987-04'), 
  ('Sexual difficulties',0,3,'fear of crime or problems with neighbors',1,'sleeping difficulties high blood pressure Upset stomach, including diarrhea, constipation, and nausea.','Indulge in (Physical Activity.  Avoid Caffeine, Alcohol, and Nicotine.',2,'2019-01-19 01:13:23.71987-04'), 
  ('Change in church activities',4,0,'uncertainty or waiting for an important outcome',3,'irritability, which can be extreme. difficulty sleeping. cramps or muscle spasms','Keep a positive (attitude Get More Sleep.',2,'2019-04-12 21:06:23.71987-04'), 
- ('Change in health of family member',4,4,'abortion or miscarriage',1,'Chest pain and rapid heartbeat. Headaches. Chest pain and rapid heartbeat.','Smile and laugh.  Take Control.',2,'2019-02-27 22:36:55.71987-04'), 
+ ('Change in health of family member',4,4,'abortion or miscarriage',1,'Chest pain and rapid heartbeat. Headaches. Chest pain and rapid heartbeat.','Smile and laugh.  Take Control.',2,'2019-00-27 22:36:55.71987-04'), 
  ('Marital separation',3,1,'lack of time or money.',2,'cramps or muscle spasms Frequent colds and infections. Frequent colds and infections.','Take Control.  Get social support.',2,'2019-10-04 20:15:23.71987-04'), 
  ('Imprisonment',4,4,'relationships, marriage, and divorce.',4,'changes in appetite. changes in appetite. cramps or muscle spasms','Take Control.  Smile and laugh.',2,'2019-03-27 22:56:55.71987-04'), 
  ('Pregnancy',1,4,'fear of crime or problems with neighbors',3,'Aches, pains, and tense muscles. rapid, disorganized thoughts. high blood pressure','Get social support.  Keep a positive (attitude',2,'2019-02-13 04:09:13.71987-04'), 
@@ -94,7 +94,7 @@ VALUES
  ('Change in working hours or conditions',3,0,'moving home.',0,'headaches. high blood pressure rapid, disorganized thoughts.','Get social support.  listen to music',2,'2019-09-27 00:10:03.71987-04'), 
  ('Death of a close family member',0,0,'illness.',0,'heart disease heart disease lower immunity against diseases','Talk to Someone.  Try Relaxation Techniques.',2,'2019-06-21 17:35:36.71987-04'), 
  ('Imprisonment',4,4,'lack of time or money.',1,'Frequent colds and infections. headaches. cramps or muscle spasms','Talk to Someone.  listen to music',2,'2019-07-04 07:13:18.71987-04'), 
- ('Business readjusment',1,4,'fear of crime or problems with neighbors',0,'stomach upset Headaches. Aches, pains, and tense muscles.','Take Control.  Take Control.',2,'2019-02-12 09:03:20.71987-04'), 
+ ('Business readjusment',1,4,'fear of crime or problems with neighbors',0,'stomach upset Headaches. Aches, pains, and tense muscles.','Take Control.  Take Control.',2,'2019-00-12 09:03:20.71987-04'), 
  ('Retirement',2,3,'pregnancy and becoming a parent',1,'cramps or muscle spasms high blood pressure Loss of sexual desire and/or ability.','Keep a Stress Diary.  Indulge in Physical (Activity.',2,'2019-06-14 06:29:52.71987-04'), 
  ('Marriage',0,3,'excessive noise, overcrowding, and pollution',1,'headache Chest pain and rapid heartbeat. cramps or muscle spasms','Try Relaxation Techniques.  Keep a Stress Diary.',2,'2019-06-20 16:05:27.71987-04'), 
  ('Outstanding personal achievement',4,1,'illness.',3,'Insomnia. difficulty concentrating, or an inability to do so. muscular aches','Smile and laugh.  Indulge in Physical Activity.',2,'2019-02-09 18:02:48.71987-04'), 
