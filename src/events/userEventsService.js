@@ -1,9 +1,9 @@
 const xss = require('xss')
 
+// Service functions for CRUD interact with db
 const StressEventsService = {
   getAllEvents(db,userId){
-    return db
-      
+    return db     
       .from('stress_events AS eve')
       .select(
         'eve.user_id',
@@ -67,17 +67,20 @@ const StressEventsService = {
     
 
   },
+
   updateEvent(db,id,eventToUpdate){
     return db('stress_events')
     .where({id})
     .update(eventToUpdate)
   },
+
   deleteEvent(db,id){
     return db
       .from('stress_events')
       .where({id}).delete()
   }
   ,
+  
   serializeEvent(event) {
     return {
       full_name: xss(event.full_name),
@@ -93,13 +96,12 @@ const StressEventsService = {
       date_recorded:event.date_recorded
     }
   },
+  
   validateStressEventInput(event){
     if(event.length>80)
     {return 'stress event title length must not exceed 80 letters'}
     return null
   }
-  
-
 }
 
 module.exports = StressEventsService

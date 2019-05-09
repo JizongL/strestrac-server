@@ -1,6 +1,7 @@
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
 const xss = require('xss')
 const bcrypt = require('bcryptjs')
+// service function for user router
 const UsersService = {
   insertUser(db,newUser){
     return db
@@ -9,15 +10,20 @@ const UsersService = {
       .returning('*')
       .then(([user])=>user)
   },
+  // check password exists
   hashPassword(password){
     return bcrypt.hash(password,12)
   },
+  // check user name exists
   hasUserWithUserName(db, user_name) {
        return db('stress_users')
          .where({ user_name })
          .first()
          .then(user => !!user)
      },
+  // check password meets the required standard
+  // must be longer than 8 letters, shorter than 72 letters and 
+  // contain special characters 
   validatePassword(password) {
     if (password.length < 8) {
       return 'Password be longer than 8 characters'
@@ -34,6 +40,7 @@ const UsersService = {
 
       return null 
   },
+  // use xss prevent cross site attack 
   serializeUser(user) {
      return {
        id: user.id,

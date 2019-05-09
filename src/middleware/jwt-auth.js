@@ -1,5 +1,6 @@
 const AuthService = require('../../auth/auth-service')
 
+// authorization with jwt token
 function requireAuth(req, res, next) {
   const authToken = req.get('Authorization') || ''
     let bearerToken
@@ -14,8 +15,7 @@ function requireAuth(req, res, next) {
         req.app.get('db'),
         payload.sub,
       )
-      .then(user=>{
-       
+      .then(user=>{       
         if(!user)
           return res.status(401).json({ error: 'Unauthorized request' })
           req.user=user
@@ -25,10 +25,10 @@ function requireAuth(req, res, next) {
       .catch(
         err =>{
           console.log(err)
-          next(err);
-        
+          next(err);        
       })
-    }catch(error){
+    }
+    catch(error){
       res.status(401).json({ error: 'Unauthorized request' })
     }   
   }

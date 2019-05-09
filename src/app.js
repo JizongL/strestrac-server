@@ -16,10 +16,12 @@ app.use(morgan(morganOption))
 app.use(cors())
 app.use(helmet())
 
+// set up express with routes and components. 
 app.use('/api/events',eventRouter)
 app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
 
+// error handler for server. 
 app.use(function errorHandler(error, req, res, next) {
     let response
     if (NODE_ENV === 'production') {
@@ -30,10 +32,6 @@ app.use(function errorHandler(error, req, res, next) {
     }
     res.status(500).json(response)
   })
-
-
-
-
 
 
 module.exports = app

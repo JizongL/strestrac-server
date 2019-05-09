@@ -4,11 +4,13 @@ const jsonBodyParser = express.json()
 const path = require('path')
 const UsersService = require('./users-service')
 
+// users for login and signup, interact with user db 
 usersRouter
   .post('/',jsonBodyParser,(req,res,next)=>{
     const {password,user_name,full_name} = req.body
     for (const field of ['full_name', 'user_name', 'password'])
-      if(!req.body[field])
+    // vlidate all fields exists  
+    if(!req.body[field])
         return res.status(400).json({
           error: `Missing '${field}' in request body`
         })
@@ -20,6 +22,7 @@ usersRouter
       req.app.get('db')
       ,user_name
     )
+    // check user name is valid
     .then(hasUserWithUserName=>{
       if(hasUserWithUserName)
         return res.status(400).json({ error: `Username already taken` })          
@@ -32,7 +35,7 @@ usersRouter
            date_created: 'now()',
         }
       
-      
+    // create new user  
     return UsersService.insertUser(
        req.app.get('db'),
        newUser
