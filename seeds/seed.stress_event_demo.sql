@@ -2,10 +2,13 @@ BEGIN;
 
 TRUNCATE
   stress_events,
-  
+  stress_users
   RESTART IDENTITY CASCADE;
 
-
+INSERT INTO stress_users(user_name,full_name,password,date_created,date_modified)
+VALUES 
+("dunder","dunder","$2a$12$4nI7xazTa/WYxYG7eJ/.c.pvptecCy4Qp0ZEU90vJViV/blmLzTh.","2019-05-08 15:17:58.989914-04"),
+("demo","demo","$2a$12$1bE.n317oC1SNNdeXX/tGuFSL8NrNF.hE2LQyK775JrfFB4jLj8r.","2019-05-08 18:18:03.214763-04");
 
 INSERT INTO stress_events(stress_event,mood,work_efficiency,stress_cause,stress_score,symptoms,coping,user_id,date_recorded)
 VALUES
