@@ -1,45 +1,26 @@
+# Express Boilerplate!
 
+This is a boilerplate project used for starting new projects!
 
-## Introduction 
+## Set up
 
-This is the backend server for the proeject StreSTrac, see details from client [here](https://github.com/JizongL/stressTrac-client/tree/master), live client [here](https://stress-tracker-app.2015rpro.now.sh/)
+Complete the following steps to start a new project (NEW-PROJECT-NAME):
 
+1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
+2. `cd` into the cloned repository
+3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
+4. Install the node dependencies `npm install`
+5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
+6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
 
-## Getting started
+## Scripts
 
-```
-$ mkdir project
-$ git clone https://github.com/JizongL/strestrac-server.git strestrac_server
-$ npm install
-```
-### .env setup
-.env hide all the secret in local environment, the format is as followed, fill in your info. For JWT_SECRET, you can generate a new random uuid from [here](https://www.uuidgenerator.net/)
+Start the application `npm start`
 
-```
-NODE_ENV=development
-PORT=8000
-MIGRATION_DB_HOST=localhost
-MIGRATION_DB_PORT=5432
-MIGRATION_DB_NAME=strestrac
-JWT_SECRET=[uuid]
-# MIGRATION_DB_NAME=strestrac-test
-MIGRATION_DB_USER=[db_user_name]
-# pur your dunder-mifflin password below if you set one, otherwise leave it like so:
-MIGRATION_DB_PASS=
-DB_URL=[link_to_local_db]
-TEST_DB_URL=[link_to_local_test_db]
-```
+Start nodemon for the application `npm run dev`
 
-### Migration
-```
-npm run migrate
+Run the tests `npm test`
 
-```
+## Deploying
 
-### Launch server
-launch development mode 
-
-```
-npm run dev
-```
-
+When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
