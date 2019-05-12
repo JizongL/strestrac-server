@@ -1,17 +1,20 @@
 {
-  "name": "express-boilerplate",
+  "name": "strestracs-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
-    "migrate": "postgrator --config postgrator-config.js",
+    "migrate-production": "postgrator --config postgrator-production-config.js",
     "start": "node src/server.js",
-    "predeploy": "npm audit",
+    "predeploy": "npm audit && npm run migrate-production",
     "deploy": "git push herooku master",
     "dev": "nodemon src/server.js"
   },
   "keywords": [],
+  "engines":{
+    "node": "11.12.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

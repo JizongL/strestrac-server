@@ -18,15 +18,14 @@ const StressEventsService = {
         'eve.symptoms',
         'eve.coping',
         'eve.date_recorded',
-
         )
       .join('stress_users AS usr',
           'eve.user_id',
           'usr.id'
       )      
       .where('eve.user_id',userId)
-
   },
+
   insertEvent(db,newEvent){
     return db
       .insert(newEvent)
@@ -34,15 +33,12 @@ const StressEventsService = {
       .returning('*')
       .then(row=>{
         return row[0]
-      })
-      
+      })      
   },
   
-  getById(db,id){
-  
+  getById(db,id){  
     return db
-    .from('stress_events AS eve')
-    
+    .from('stress_events AS eve')    
       .select(
         'usr.full_name',
         'usr.id',
@@ -56,7 +52,6 @@ const StressEventsService = {
         'eve.symptoms',
         'eve.coping',
         'eve.date_recorded',
-
         )
       .join('stress_users AS usr',
           'eve.user_id',
@@ -64,20 +59,20 @@ const StressEventsService = {
       )      
        .where('eve.id',id)
        .first()
-    
-
   },
+
   updateEvent(db,id,eventToUpdate){
     return db('stress_events')
     .where({id})
     .update(eventToUpdate)
   },
+  
   deleteEvent(db,id){
     return db
       .from('stress_events')
       .where({id}).delete()
-  }
-  ,
+  },
+  
   serializeEvent(event) {
     return {
       full_name: xss(event.full_name),
@@ -93,13 +88,12 @@ const StressEventsService = {
       date_recorded:event.date_recorded
     }
   },
+  
   validateStressEventInput(event){
     if(event.length>80)
     {return 'stress event title length must not exceed 80 letters'}
     return null
   }
-  
-
 }
 
 module.exports = StressEventsService

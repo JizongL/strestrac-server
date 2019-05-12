@@ -9,15 +9,18 @@ const UsersService = {
       .returning('*')
       .then(([user])=>user)
   },
+  
   hashPassword(password){
     return bcrypt.hash(password,12)
   },
+  
   hasUserWithUserName(db, user_name) {
        return db('stress_users')
          .where({ user_name })
          .first()
          .then(user => !!user)
      },
+  
   validatePassword(password) {
     if (password.length < 8) {
       return 'Password be longer than 8 characters'
@@ -31,7 +34,6 @@ const UsersService = {
     if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
       return 'Password must contain 1 upper case, lower case, number and special character'
      }
-
       return null 
   },
   serializeUser(user) {

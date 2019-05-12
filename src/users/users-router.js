@@ -4,6 +4,7 @@ const jsonBodyParser = express.json()
 const path = require('path')
 const UsersService = require('./users-service')
 
+// create new user
 usersRouter
   .post('/',jsonBodyParser,(req,res,next)=>{
     const {password,user_name,full_name} = req.body
@@ -12,14 +13,17 @@ usersRouter
         return res.status(400).json({
           error: `Missing '${field}' in request body`
         })
+    // validate password match standards        
     const passwordError = UsersService.validatePassword(password)
     if(passwordError){
       return res.status(400).json({ error: passwordError })
     }  
+    // verify password exists
     UsersService.hasUserWithUserName(
       req.app.get('db')
       ,user_name
     )
+    // if user exists, prompt 
     .then(hasUserWithUserName=>{
       if(hasUserWithUserName)
         return res.status(400).json({ error: `Username already taken` })          
