@@ -97,8 +97,8 @@ describe('Events Endpoints', function() {
       })
     })
   })
-  describe.only(`GET /api/events/:event_id`, () => {
-    context.only(`Given no event`, () => {
+  describe(`GET /api/events/:event_id`, () => {
+    context(`Given no event`, () => {
       beforeEach(() =>
       helpers.seedUsers(db, testUsers))
       it(`responds with 404`, () => {
@@ -110,7 +110,7 @@ describe('Events Endpoints', function() {
       })
     })
 
-    context.only('Given there are events in the database', () => {
+    context('Given there are events in the database', () => {
       beforeEach('insert events', () =>
         helpers.seedEventsTables(
           db,
@@ -130,7 +130,7 @@ describe('Events Endpoints', function() {
       })
     })
 
-    context.only(`Given an XSS attack event`, () => {
+    context(`Given an XSS attack event`, () => {
       const testUser = helpers.makeUsersArray()[1]
       const {
         maliciousEvent,
@@ -158,7 +158,7 @@ describe('Events Endpoints', function() {
     })
   })
 
-  describe.only(`POST /api/events`,()=>{
+  describe(`POST /api/events`,()=>{
     beforeEach('insert events', () =>
     helpers.seedEventsTables(
       db,
@@ -166,7 +166,7 @@ describe('Events Endpoints', function() {
       testEvents          
     )       
   )
-  it.only('create an event, responding with 201 and the new review',function(){
+  it('create an event, responding with 201 and the new review',function(){
     this.retries(3)
     const testEvent = testEvents[0]
     const testUser = testUsers[0]
@@ -223,7 +223,7 @@ describe('Events Endpoints', function() {
         work_efficiency:5,      
     }
 
-    it.only(`responds with 400 and an error message when the '${field}' is missing`,()=>{
+    it(`responds with 400 and an error message when the '${field}' is missing`,()=>{
       delete newEvent[field]
       return supertest(app)
         .post('/api/events')
@@ -235,7 +235,7 @@ describe('Events Endpoints', function() {
   })
   })
 
-  describe.only(`DELETE /api/events/:event_id`,()=>{
+  describe(`DELETE /api/events/:event_id`,()=>{
     context(`Given there are events in the database`,()=>{
       
       beforeEach('insert events', () =>
@@ -270,8 +270,8 @@ describe('Events Endpoints', function() {
 
     })
   })
-  describe.only(`PATCH /api/events`,()=>{
-    context.only(`Given no events`,()=>{
+  describe(`PATCH /api/events`,()=>{
+    context(`Given no events`,()=>{
       beforeEach('insert events', () =>
       helpers.seedUsers(
         db,
@@ -288,7 +288,7 @@ describe('Events Endpoints', function() {
             //.expect(404,{error:{message:`event doesn't exist`}})
       })
     })
-    context.only(`Given there are events`,()=>{
+    context(`Given there are events`,()=>{
       beforeEach('insert events', () =>
       helpers.seedEventsTables(
         db,

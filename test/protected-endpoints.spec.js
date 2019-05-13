@@ -62,7 +62,7 @@ describe(`Protected endpoints`,()=>{
           .expect(401, { error: `Unauthorized request` })
       })
 
-       it.only(`responds 401 'Unauthorized request' when invalid user`, () => {
+       it(`responds 401 'Unauthorized request' when invalid user`, () => {
         const invalidUser = { user_name: 'user-not-existy', id: 1 }
         return endpoint.method(endpoint.path)
             
