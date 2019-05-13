@@ -2,9 +2,9 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helper')
 const bcrypt = require('bcryptjs')
+
 describe('Users Endpoints', function() {
   let db
-
   const { testUsers } = helpers.makeEventsFixtures()
   const testUser = testUsers[0]
 
@@ -30,7 +30,6 @@ describe('Users Endpoints', function() {
           testUsers,
         )
       )
-
       const requiredFields = ['user_name', 'password', 'full_name']
 
       requiredFields.forEach(field => {
@@ -38,43 +37,44 @@ describe('Users Endpoints', function() {
           user_name: 'test user_name',
           password: 'test password',
           full_name: 'test full_name',         
-        }
+         }
 
         it(`responds with 400 required error when '${field}' is missing`, () => {
           delete registerAttemptBody[field]
-
           return supertest(app)
             .post('/api/users')
             .send(registerAttemptBody)
             .expect(400, {
               error: `Missing '${field}' in request body`,
             })
+          })
         })
-      })
+
         it(`responds 400 'Password must be longer than 8 characters' when short password`, () => {
           const userShortPassword = {
-                user_name: 'test user_name',
-                password: '1234567',
-                full_name: 'test full_name',
-              }
-              return supertest(app)
-                .post('/api/users')
-                .send(userShortPassword)
-                .expect(400, { error: `Password be longer than 8 characters` })
-      })
+            user_name: 'test user_name',
+            password: '1234567',
+            full_name: 'test full_name',
+          }
+          return supertest(app)
+            .post('/api/users')
+            .send(userShortPassword)
+            .expect(400, { error: `Password be longer than 8 characters` })
+          })
      
-      it(`responds 400 'Password be less than 72 characters' when long password`,()=>{
-        const userLongPassword = {
-          user_name:'test user_name',
-          password:'*'.repeat(73),
-          full_name:'test full_name'
-        }
-        return supertest(app)
-          .post('/api/users')
-          .send(userLongPassword)
-          .expect(400,{ error: `Password be less than 72 characters` })
-      })
-      it(`responds 400 error when password starts with spaces`, () => {
+        it(`responds 400 'Password be less than 72 characters' when long password`,()=>{
+          const userLongPassword = {
+            user_name:'test user_name',
+            password:'*'.repeat(73),
+            full_name:'test full_name'
+          }
+          return supertest(app)
+            .post('/api/users')
+            .send(userLongPassword)
+            .expect(400,{ error: `Password be less than 72 characters` })
+        })
+
+        it(`responds 400 error when password starts with spaces`, () => {
          const userPasswordStartsSpaces = {
            user_name: 'test user_name',
            password: ' 1Aa!2Bb@',
@@ -85,42 +85,42 @@ describe('Users Endpoints', function() {
            .send(userPasswordStartsSpaces)
            .expect(400, { error: `Password must not start or end with empty spaces` })
        })
-       it(`responds 400 error when password ends with spaces`, () => {
-         const userPasswordEndsSpaces = {
-           user_name: 'test user_name',
-           password: '1Aa!2Bb@ ',
-           full_name: 'test full_name',
-         }
-         return supertest(app)
-           .post('/api/users')
-           .send(userPasswordEndsSpaces)
-           .expect(400, { error: `Password must not start or end with empty spaces` })
-       })
-       it(`responds 400 error when password isn't complex enough`, () => {
-         const userPasswordNotComplex = {
-           user_name: 'test user_name',
-           password: '11AAaabb',
-           full_name: 'test full_name',
-         }
-         return supertest(app)
-           .post('/api/users')
-           .send(userPasswordNotComplex)
-           .expect(400, { error: `Password must contain 1 upper case, lower case, number and special character` })
-       })
-       it(`responds 400 'User name already taken' when user_name isn't unique`, () => {
-           const duplicateUser = {
-             user_name: testUser.user_name,
-             password: '11AAaa!!',
-             full_name: 'test full_name',
-           }
-           return supertest(app)
-             .post('/api/users')
-             .send(duplicateUser)
-             .expect(400, { error: `Username already taken` })
-         })
+        it(`responds 400 error when password ends with spaces`, () => {
+          const userPasswordEndsSpaces = {
+            user_name: 'test user_name',
+            password: '1Aa!2Bb@ ',
+            full_name: 'test full_name',
+          }
+          return supertest(app)
+            .post('/api/users')
+            .send(userPasswordEndsSpaces)
+            .expect(400, { error: `Password must not start or end with empty spaces` })
+        })
 
+        it(`responds 400 error when password isn't complex enough`, () => {
+          const userPasswordNotComplex = {
+            user_name: 'test user_name',
+            password: '11AAaabb',
+            full_name: 'test full_name',
+          }
+          return supertest(app)
+            .post('/api/users')
+            .send(userPasswordNotComplex)
+            .expect(400, { error: `Password must contain 1 upper case, lower case, number and special character` })
+        })
+         it(`responds 400 'User name already taken' when user_name isn't unique`, () => {
+             const duplicateUser = {
+               user_name: testUser.user_name,
+               password: '11AAaa!!',
+               full_name: 'test full_name',
+             }
+             return supertest(app)
+               .post('/api/users')
+               .send(duplicateUser)
+               .expect(400, { error: `Username already taken` })
+             })                  
+          })
 
-    })
     context(`Happy path`, () => {
       it(`responds 201, serialized user, storing bcryped password`, () => {
         const newUser = {
@@ -159,8 +159,8 @@ describe('Users Endpoints', function() {
              .then(compareMatch=>{
                expect(compareMatch).to.be.true
              })
-           )
+            )
+          })
+        })
       })
-   })
-})
-})
+    })

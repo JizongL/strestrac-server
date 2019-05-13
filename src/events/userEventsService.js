@@ -33,10 +33,29 @@ const StressEventsService = {
       .returning('*')
       .then(row=>{
         return row[0]
+<<<<<<< HEAD
       })      
   },
   
   getById(db,id){  
+||||||| merged common ancestors
+      })
+      // .then(([event]) => event)
+      // .then(event =>{
+      //   console.log(event.id,'test event in event service')
+      //   return StressEventsService.getById(db,event.id)
+
+      // })
+  },
+  // need to test if userId is needed
+  getById(db,id){
+    //console.log(id,'test id inside get by id')
+=======
+      })
+    },
+
+  getById(db,id){
+>>>>>>> testing
     return db
     .from('stress_events AS eve')    
       .select(
@@ -87,12 +106,21 @@ const StressEventsService = {
       coping:xss(event.coping),
       date_recorded:event.date_recorded
     }
+<<<<<<< HEAD
   },
   
   validateStressEventInput(event){
     if(event.length>80)
     {return 'stress event title length must not exceed 80 letters'}
     return null
+||||||| merged common ancestors
+=======
+  },
+  validateEventTitle(eventTitle){
+    if(eventTitle.length>72){
+      return 'event title should be less than 72 letters long'
+    }
+>>>>>>> testing
   }
 }
 
