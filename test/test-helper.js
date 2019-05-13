@@ -113,9 +113,7 @@ function seedUsers(db, users) {
 
 function seedEventsTables(db, users, events) {
   // use a transaction to group the queries and auto rollback on any failure
-  return db.transaction(async trx => {
-    
-    
+  return db.transaction(async trx => {        
     await seedUsers(trx,users)
     await trx.into('stress_events').insert(events)
     // update the auto sequence to match the forced id values
@@ -123,19 +121,9 @@ function seedEventsTables(db, users, events) {
             `SELECT setval('stress_events_id_seq', ?)`,
             [events[events.length - 1].id],
           )
-    // only insert comments if there are some, also update the sequence counter  
-  
+    // only insert comments if there are some, also update the sequence counter    
   })
 }
-
-// function cleanTables(db) {
-//   return db.raw(
-//     `TRUNCATE
-//       stress_events,
-//       stress_users      
-//       `
-//   )
-// }
 
 function cleanTables(db) {
   return db.transaction(trx =>
@@ -150,12 +138,12 @@ function cleanTables(db) {
         trx.raw(`ALTER SEQUENCE stress_events_id_seq minvalue 0 START WITH 1`),
         trx.raw(`ALTER SEQUENCE stress_users_id_seq minvalue 0 START WITH 1`),        
         trx.raw(`SELECT setval('stress_events_id_seq', 0)`),
-        trx.raw(`SELECT setval('stress_users_id_seq', 0)`),
-        
+        trx.raw(`SELECT setval('stress_users_id_seq', 0)`),        
       ])
     )
   )
 }
+
 function makeMaliciousEvent() {
   const maliciousEvent = {
     id: 911,
@@ -180,12 +168,12 @@ function makeMaliciousEvent() {
     expectedEvent,
   }
 }
+
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ user_id: user.id }, secret, {
        subject: user.user_name,
        algorithm: 'HS256',
      })
-     //console.log(token,'test token')
 return `Bearer ${token}`
 }
 
@@ -196,7 +184,7 @@ function seedMaliciousEvent(db, user, event) {
         .into('stress_events')
         .insert([event])
     )
-}
+  }
 
 module.exports ={
   seedMaliciousEvent,

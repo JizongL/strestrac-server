@@ -35,16 +35,9 @@ const StressEventsService = {
       .then(row=>{
         return row[0]
       })
-      // .then(([event]) => event)
-      // .then(event =>{
-      //   console.log(event.id,'test event in event service')
-      //   return StressEventsService.getById(db,event.id)
+    },
 
-      // })
-  },
-  // need to test if userId is needed
   getById(db,id){
-    //console.log(id,'test id inside get by id')
     return db
     .from('stress_events AS eve')
     
@@ -103,8 +96,6 @@ const StressEventsService = {
       return 'event title should be less than 72 letters long'
     }
   }
-
-
 }
 
 module.exports = StressEventsService
