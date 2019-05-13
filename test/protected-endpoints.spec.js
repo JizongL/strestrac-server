@@ -4,7 +4,6 @@ const helpers = require('./test-helper')
 
 describe(`Protected endpoints`,()=>{
   let db
-
   const {
     testUsers,
     testEvents
