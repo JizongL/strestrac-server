@@ -31,14 +31,4 @@ app.use(function errorHandler(error, req, res, next) {
     res.status(500).json(response)
   })
 
-<<<<<<< HEAD
-||||||| merged common ancestors
-
-
-
-
-
-=======
-
->>>>>>> testing
 module.exports = app
