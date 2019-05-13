@@ -97,7 +97,13 @@ const StressEventsService = {
       coping:xss(event.coping),
       date_recorded:event.date_recorded
     }
+  },
+  validateEventTitle(eventTitle){
+    if(eventTitle.length>72){
+      return 'event title should be less than 72 letters long'
+    }
   }
+
 
 }
 

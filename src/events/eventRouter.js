@@ -31,6 +31,11 @@ eventRouter
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
+      eventValidateError = StressEventsService.validateEventTitle(stress_event)
+        if(eventValidateError){
+          return res.status(400).json({ error: eventValidateError })
+        }   
+
         StressEventsService.insertEvent(
     req.app.get('db'),
     newEvent

@@ -223,6 +223,31 @@ describe('Events Endpoints', function() {
         work_efficiency:5,      
     }
 
+    it(`return error if event title is longer than 72 letters long`,()=>{
+      this.retries(3)
+      const testEvent = testEvents[0]
+      const testUser = testUsers[0]
+      const newEvent = {
+        coping: "listen to music",
+        //date_recorded: "2019-04-30T18:51:34.646Z",
+        date_recorded: new Date(),
+        id:testEvent.id,
+        mood:4,
+        stress_cause:"test",
+        stress_event:"a".repeat(100),
+        stress_score:4,
+        symptoms: "headache",
+        user_id:testUser.id,
+        work_efficiency:5,
+      }
+      return supertest(app)
+      .post('/api/events')
+      .set('Authorization', helpers.makeAuthHeader(testUser))
+      .send(newEvent)
+      .expect(400,{error:'event title should be less than 72 letters long'})            
+    })
+      
+
     it(`responds with 400 and an error message when the '${field}' is missing`,()=>{
       delete newEvent[field]
       return supertest(app)
