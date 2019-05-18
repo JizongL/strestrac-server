@@ -1,26 +1,108 @@
-# Express Boilerplate!
+## StreSTrac server
 
-This is a boilerplate project used for starting new projects!
+### Introduction
+[StreSTrac](https://stress-tracker-app.2015rpro.now.sh) is an experimental React application that allows user to document their stress events, with the goal of helping users to understand their stress pattern and thus control it. 
 
-## Set up
+This server use JWT token to authenticate user login, user signup for an account through client and the server will encrypt the password with [Bcrypt.js](https://www.npmjs.com/package/bcryptjs) to generate a JWT token and store it in the database. and when user login to their account, server will verify user's credential by using a JWT secret stored in the server envionment. 
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+All server endpoints have been fully tested with mocha and its [lived version]() has been deployed to heroku. 
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
 
-## Scripts
+[client github](https://github.com/JizongL/stressTrac-client)
 
-Start the application `npm start`
 
-Start nodemon for the application `npm run dev`
 
-Run the tests `npm test`
 
-## Deploying
+[live version](https://blooming-mountain-74904.herokuapp.com/api)
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+### How it work
+
+#### for loocal development environment
+
+```
+mkdir streSTrac && cd $_
+git clone https://github.com/JizongL/strestrac-server stresStracServer
+```
+#### install node-modules and run test
+```
+npm i && npm t
+
+```
+
+#### Create and setup local .env 
+In root directory run
+```
+mkdir .env
+```
+paste the following and update the info
+
+```
+NODE_ENV=development
+PORT=8000
+MIGRATION_DB_HOST=localhost
+MIGRATION_DB_PORT=5432
+MIGRATION_DB_NAME=strestrac
+JWT_SECRET='[your-geneated-uuid]'
+# MIGRATION_DB_NAME=strestrac-test
+MIGRATION_DB_USER=[your-db-username]
+# pur your dunder-mifflin password below if you set one, otherwise leave it like so:
+MIGRATION_DB_PASS=
+DB_URL="postgresql://dunder-mifflin@localhost/strestrac"
+TEST_DB_URL="postgresql://thingful@localhost/strestrac-test"
+
+```
+
+#### setup postgreSQL database and run migration
+
+```
+createdb -U user_name database_name
+```
+
+#### Run database migration 
+
+```
+npm run migrate
+```
+#### Start Server
+```
+npm run dev
+```
+
+#### Connect to client 
+In client, find config.js and paste the address for `API_ENDPOINT`
+
+```
+export default {
+  API_ENDPOINT: http://localhost:8000,
+  TOKEN_KEY: 'strestrac-client-auth-token',
+}
+```
+
+#### Additional note
+
+For deployment to Heroku, change `process.env.DB_URL` to `process.env.DATABASE_URL` in the config.js file in root.
+
+```
+module.exports = {
+  PORT: process.env.PORT || 8000,
+  NODE_ENV: process.env.NODE_ENV || 'development',
+  DB_URL: process.env.DATABASE_URL || 'postgresql://dunder-mifflin@localhost/strestrac',
+  JWT_SECRET: process.env.JWT_SECRET || '395d92cf-e93c-4945-8578-0cffa7181d9a',
+}
+```
+ 
+### Technology used
+
+### built
+
+* [Express](https://expressjs.com/)
+
+* [Node.js](https://nodejs.org/en/)
+
+* [PostgreSQL](https://www.postgresql.org/)
+
+* [Heroku](https://www.heroku.com/)
+
+
+
+
